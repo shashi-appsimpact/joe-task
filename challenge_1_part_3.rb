@@ -9,7 +9,7 @@ module ReusablePart
   def ReusablePart.get_file_columns(initial, last)
     @@columns = []
     @@file.each_line do |line|
-      @@columns << line.split(" ")[0 , 9]
+      @@columns << line.split(" ")[initial , last]
     end
   end
 

@@ -3,7 +3,7 @@ require_relative 'challenge_1_part_3'
 file = File.open(your_file_path)
 
 ReusablePart.read_file(file)
-ReusablePart.get_file_columns(0, 9)
+ReusablePart.get_file_columns(0, 3)
 ReusablePart.delete_header_column
 ReusablePart.delete_footer_column
 columns = ReusablePart.remove_empty_element
