@@ -1,19 +1,11 @@
-# Read file:
+require_relative 'challenge_1_part_3'
 
 file = File.open(your_file_path)
 
-# Read first three columns(Day, Min Temp and Max Temp) from weather data file
-columns = []
-
-file.each_line do |line|
-  columns << line.split(" ")[0 , 9]
-end
-
-# Deleting the header part
-columns.delete(columns.first)
-
-# Remove the dashed line from the array because this not useful
-columns = columns.reject { |c| c.include?"-------------------------------------------------------" }
+ReusablePart.read_file(file)
+ReusablePart.get_file_columns(0, 9)
+ReusablePart.delete_header_column
+columns = ReusablePart.remove_dashed_line
 
 # Remove team sequence number and '-' symbol from list and prepare a refined array:
 
@@ -25,24 +17,13 @@ columns.each do |col|
   refined_array << temp_arr.flatten!  
 end
 
-# Creating a collection of hashes of team and the goal_difference between for and against 
-goal_temp_hash = []
+temp_hash_data = ReusablePart.get_temporary_hash_data(refined_array)
 
-refined_array.each { |refined| goal_temp_hash << { team: refined.first, goal_difference: refined[1].to_i  - refined[2].to_i } }
+smallest_goal_difference = ReusablePart.smallest_difference_value(temp_hash_data)
 
-# Restoring the goal difference inside an array
-for_and_against_goal_diffs = []
-
-goal_temp_hash.each { |goal_hash| for_and_against_goal_diffs << goal_hash[:goal_difference] }
-
-# smallest goal difference
-smallest_goal_difference = for_and_against_goal_diffs.min 
-
-# Resulting the team which has the smallest goal difference between for and against
-
-goal_temp_hash.each do |goal_hash|
-  if goal_hash.has_value?(smallest_goal_difference)
-    puts "Team #{goal_hash[:team]} has the smallest difference in for and against goal, which is #{goal_hash[:goal_difference]}"
+temp_hash_data.each do |temp_hash|
+  if temp_hash.has_value?(smallest_goal_difference)
+    puts "Team #{temp_hash[:key_one]} has the smallest difference in for and against goal, which is #{temp_hash[:key_two]}"
     break
   end
 end
